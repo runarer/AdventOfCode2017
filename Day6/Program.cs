@@ -1,4 +1,4 @@
-﻿int? Part1(int[] memory)
+﻿(int, int[]) FindLoop(int[] memory)
 {
     int sum = memory.Sum();
 
@@ -37,12 +37,19 @@
         config = string.Join(" ", memCopy);
     }
 
-    return cycles;
+    return (cycles,memCopy);
 }
 
-int? Part2()
+
+int? Part1(int[] memory)
 {
-    return null;
+    return FindLoop(memory).Item1;
+}
+
+int? Part2(int[] memory)
+{
+    int[] loopStart = FindLoop(memory).Item2;
+    return FindLoop(loopStart).Item1;
 }
 
 
@@ -60,5 +67,5 @@ using (StreamReader sr = new(args[0]))
 }
 
 Console.WriteLine("Part 1: {0}", Part1(memory));
-Console.WriteLine("Part 2: {0}", Part2());
+Console.WriteLine("Part 2: {0}", Part2(memory));
 
