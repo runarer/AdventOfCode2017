@@ -5,7 +5,7 @@
     int[] memCopy = [.. memory];
     int cycles = 0;
 
-    HashSet<string> seenConfigurations = new();
+    HashSet<string> seenConfigurations = [];
 
     string config = string.Join(" ", memCopy);
     while (!seenConfigurations.Contains(config))

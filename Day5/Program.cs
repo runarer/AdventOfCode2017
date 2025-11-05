@@ -42,7 +42,7 @@ int? Part2(List<int> instructions)
 
 
 List<int> instructions = [];
-using (StreamReader sr = new StreamReader(args[0]))
+using (StreamReader sr = new(args[0]))
 {
     while (!sr.EndOfStream)
     {

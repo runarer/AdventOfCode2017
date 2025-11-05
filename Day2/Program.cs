@@ -22,8 +22,8 @@ int? Part2(List<int[]> rows)
     return checksum;
 }
 
-List<int[]> rows = new List<int[]>();
-using (StreamReader sr = new StreamReader(args[0]))
+List<int[]> rows = [];
+using (StreamReader sr = new (args[0]))
 {
     while (!sr.EndOfStream)
     {

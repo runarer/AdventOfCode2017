@@ -57,7 +57,7 @@ int? Part2(int number)
 
 int number;
 
-using (StreamReader sr = new StreamReader(args[0]))
+using (StreamReader sr = new(args[0]))
 {
     string? line = sr.ReadLine();
     bool isNumber = int.TryParse(line, out number);

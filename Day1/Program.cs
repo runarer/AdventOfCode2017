@@ -27,7 +27,7 @@ namespace Day1
         }
         static void Main(string[] args)
         {
-            using (StreamReader reader = new StreamReader(args[0]))
+            using (StreamReader reader = new(args[0]))
             {
                 string line = reader.ReadLine() ?? "No Lines";                
                 char[] chars = line.ToCharArray();

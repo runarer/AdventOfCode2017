@@ -43,7 +43,7 @@ int? Part2(List<string> lines, string root)
 
 
 List<string> lines = [];
-using (StreamReader sr = new StreamReader(args[0]))
+using (StreamReader sr = new(args[0]))
 {
     while (!sr.EndOfStream)
     {
