@@ -28,7 +28,7 @@ using (StreamReader sr = new StreamReader(args[0]))
     while (!sr.EndOfStream)
     {
         string? line = sr.ReadLine();
-        if (line != null)
+        if (line is not null)
         {
             //Console.WriteLine(line);
             rows.Add([.. line.Split('\t').Select(i => int.Parse(i))]);

@@ -47,7 +47,7 @@ using (StreamReader sr = new StreamReader(args[0]))
     while (!sr.EndOfStream)
     {
         string? line = sr.ReadLine();
-        if (line != null)
+        if (line is not null)
         {
             instructions.Add(int.Parse(line));
         }

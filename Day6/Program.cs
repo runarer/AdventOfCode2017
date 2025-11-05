@@ -59,7 +59,7 @@ using (StreamReader sr = new(args[0]))
     while (!sr.EndOfStream)
     {
         string? line = sr.ReadLine();
-        if (line != null)
+        if (line is not null)
         {
             memory = [.. line.Split('\t').Select(int.Parse)];
         }
