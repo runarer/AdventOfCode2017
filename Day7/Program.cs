@@ -64,7 +64,7 @@ int? Part2(ProgramNode root)
         if (child.TotalWeight != root.CorrectWeight)
             return Part2(child);
     }
-
+    if (root.Parent == null) return 0;
     return root.Weight + (root.Parent.CorrectWeight - root.TotalWeight);
 }
 
