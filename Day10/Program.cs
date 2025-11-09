@@ -33,7 +33,7 @@ Console.WriteLine($"Part 1: {Part1(line)}");
 //Console.WriteLine($"Part 2 TEST: {Part2("AoC 2017".Trim())}");
 //Console.WriteLine($"Part 2 TEST: {Part2("1,2,3".Trim())}");
 //Console.WriteLine($"Part 2 TEST: {Part2("1,2,4".Trim())}");
-Console.WriteLine($"Part 2: {Part2("212,254,178,237,2,0,1,54,167,92,117,125,255,61,159,164".Trim())}");
+Console.WriteLine($"Part 2: {Part2(line.Trim())}");
 
 return 0;
 
