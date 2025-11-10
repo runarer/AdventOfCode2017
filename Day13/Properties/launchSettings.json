@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Day13": {
+      "commandName": "Project",
+      "commandLineArgs": "day13.txt",
+      "workingDirectory": "C:\\Users\\runar\\Advent of Code\\2017"
+    }
+  }
+}
