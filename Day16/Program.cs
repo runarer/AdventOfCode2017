@@ -1,10 +1,5 @@
-﻿<<<<<<<<< Temporary merge branch 1
-﻿using System.Data;
-
-string input = String.Empty;
-=========
 ﻿string input = String.Empty;
->>>>>>>>> Temporary merge branch 2
+
 
 try
 {
