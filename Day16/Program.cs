@@ -1,4 +1,4 @@
-﻿string input = String.Empty;
+string input = String.Empty;
 
 try
 {
