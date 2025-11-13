@@ -1,4 +1,10 @@
-﻿int ValuesToAdd = 2018;
+﻿/* Another way is to use an array, size defined at start (2018).
+ * In the array we keep tuples of (index_next,index_prev) and the
+ * array index is the value.
+ * This way each time we add we just need to add one and update two. 
+ */
+
+int ValuesToAdd = 2018;
 int steps = 0;
 try
 {
