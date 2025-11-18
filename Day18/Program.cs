@@ -63,7 +63,7 @@ long? Part1(Instruction[] instructions)
     long? recoveredSound = null;
 
     while (pointer >= 0 && pointer < instructions.Length)
-    {        
+    {
         var (ins, arg1, arg2) = instructions[pointer];
 
         switch (ins)
@@ -74,7 +74,7 @@ long? Part1(Instruction[] instructions)
             case InstructionSet.mul:
                 registers[(int)arg1.Item2] *= arg2?.Item1 ?? registers[(int)arg2?.Item2];
                 break;
-            case InstructionSet.jgz:                
+            case InstructionSet.jgz:
                 if ((arg1.Item2 == null && arg1.Item1 > 0) || (arg1.Item2 != null && registers[(int)arg1.Item2] > 0))
                 {
                     pointer--;
@@ -95,10 +95,10 @@ long? Part1(Instruction[] instructions)
                 {
                     recoveredSound = sound;
                     pointer = -10_000;
-                }                
+                }
                 break;
-        }        
-            pointer++;
+        }
+        pointer++;
     }
 
     return recoveredSound;
@@ -106,7 +106,86 @@ long? Part1(Instruction[] instructions)
 
 int? Part2(Instruction[] instructions)
 {
-    return null;
+    long[] registerA = [0, 0, 0, 0, 0];
+    long[] registerB = [0, 0, 0, 0, 1];
+    long pointerA = 0;
+    long pointerB = 0;
+    Queue<long> outA = new();
+    Queue<long> outB = new();
+
+    long[] registers = registerA;
+    long pointer = pointerA;
+    Queue<long> inQueue = outB;
+    Queue<long> outQueue = outA;
+    char current = 'A';
+
+    int ProgASent = 0;
+
+    do
+    {
+        bool doASwitch = false;
+        var (ins, arg1, arg2) = instructions[pointer];
+
+        switch (ins)
+        {
+            case InstructionSet.set:
+                registers[(int)arg1.Item2] = arg2?.Item1 ?? registers[(int)arg2?.Item2];
+                break;
+            case InstructionSet.mul:
+                registers[(int)arg1.Item2] *= arg2?.Item1 ?? registers[(int)arg2?.Item2];
+                break;
+            case InstructionSet.jgz:
+                if ((arg1.Item2 == null && arg1.Item1 > 0) || (arg1.Item2 != null && registers[(int)arg1.Item2] > 0))
+                {
+                    pointer--;
+                    pointer += arg2?.Item1 ?? registers[(int)arg2?.Item2];
+                }
+                break;
+            case InstructionSet.add:
+                registers[(int)arg1.Item2] += arg2?.Item1 ?? registers[(int)arg2?.Item2];
+                break;
+            case InstructionSet.mod:
+                registers[(int)arg1.Item2] %= arg2?.Item1 ?? registers[(int)arg2?.Item2];
+                break;
+            case InstructionSet.snd:
+                outQueue.Enqueue(arg1.Item1 ?? registers[(int)arg1.Item2]);
+                if (current == 'B') ProgASent++;
+                break;
+            case InstructionSet.rcv:
+                if (inQueue.Count > 0)
+                {
+                    registers[(int)arg1.Item2] = inQueue.Dequeue();
+                }
+                else
+                {
+                    if (current == 'B')
+                    {
+                        pointerB = pointer;
+                        registers = registerA;
+                        pointer = pointerA;
+                        inQueue = outB;
+                        outQueue = outA;
+                        current = 'A';
+                    }
+                    else
+                    {
+                        pointerA = pointer;
+                        registers = registerB;
+                        pointer = pointerB;
+                        inQueue = outA;
+                        outQueue = outB;
+                        current = 'B';
+                    }
+                    doASwitch = true;
+                }
+                break;
+        }
+        if (doASwitch && outA.Count == 0 && outB.Count == 0) { break; }
+        if(!doASwitch) pointer++;
+
+    } while (true);
+
+    return ProgASent;
 }
 
 InstructionSet GetInstruction(string ins)
