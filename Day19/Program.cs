@@ -43,9 +43,26 @@ string? Part1(char[,] map, int start)
     }
     return string.Join(string.Empty, letters); ;
 }
-int? Part2()
+int Part2()
 {
-    return null;
+    int steps = 0;
+
+    (int y, int x) = (0, start);
+    Direction dir = Direction.South;
+    char current = map[0, start];
+
+    while (current != ' ')
+    {
+        steps++;
+        if (current == '+')
+        {
+            // Change direction
+            dir = NewDirection(map, x, y, dir);
+        }
+        (y, x) = FindNext(x, y, dir);
+        current = map[y, x];
+    }
+    return steps;
 }
 
 char[,] ParseLines(string[] lines)
