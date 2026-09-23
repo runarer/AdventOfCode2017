@@ -1,4 +1,6 @@
-﻿string[] lines;
+﻿/* Denne oppgaven kan brukes for å vise bruk av enum og switch. */
+
+string[] lines;
 
 using (StreamReader reader = new(args[0]))
 {
@@ -40,6 +42,9 @@ for (int row = 0; row < mapHeight; row++,y--)
 int infections = runBurst(10_000);
 Console.WriteLine($"Part 1 {infections}");
 
+int advancedInfections = runEvolvedVirus(10_000_000);
+Console.WriteLine($"Part 2 {advancedInfections}");
+
 return 0;
 
 
@@ -51,7 +56,7 @@ int runBurst(int bursts)
     Direction currentDirection = Direction.Up;
     int infections = 0;
 
-    for (int burst = 0; burst < 10_000; burst++)
+    for (int burst = 0; burst < bursts; burst++)
     {
         if (tempInfected.Contains(currentNode))
         {
@@ -63,6 +68,47 @@ int runBurst(int bursts)
             currentDirection = turnLeft(currentDirection);
             tempInfected.Add(currentNode);
             infections++;
+        }
+        currentNode = move(currentNode.Item1, currentNode.Item2, currentDirection);
+    }
+    return infections;
+}
+
+
+int runEvolvedVirus(int bursts)
+{
+    Dictionary<(int, int), NodeStatus> tempInfected = infected.ToDictionary(x=>x,x=>NodeStatus.Infected);
+    (int, int) currentNode = (0, 0);
+    Direction currentDirection = Direction.Up;
+    int infections = 0;
+
+    for (int burst = 0; burst < bursts; burst++)
+    {
+        if (tempInfected.TryGetValue(currentNode, out NodeStatus result))
+        {
+            switch (result) {
+                case NodeStatus.Clean: 
+                    currentDirection = turnLeft(currentDirection);
+                    break;
+                case NodeStatus.Weakened:
+                    // keep direction
+                    break;
+                case NodeStatus.Infected:
+                    currentDirection = turnRight(currentDirection); 
+                    break;
+                case NodeStatus.Flagged:
+                    currentDirection = turnAround(currentDirection);
+                    break;
+            }
+            tempInfected[currentNode] = ChangeStatus(result);
+            if (tempInfected[currentNode] == NodeStatus.Infected)
+                infections++;
+        }
+        else
+        {
+            // Nodes not found are clean
+            currentDirection = turnLeft(currentDirection);
+            tempInfected[currentNode] = ChangeStatus(NodeStatus.Clean);
         }
         currentNode = move(currentNode.Item1, currentNode.Item2, currentDirection);
     }
@@ -96,7 +142,16 @@ static Direction turnRight(Direction direction) => direction switch
     _ => throw new NotImplementedException()
 };
 
-NodeStatus ChangeStatus(NodeStatus status) => status switch
+static Direction turnAround(Direction direction) => direction switch
+{
+    Direction.Up => Direction.Down,
+    Direction.Left => Direction.Right,
+    Direction.Down => Direction.Up,
+    Direction.Right => Direction.Left,
+    _ => throw new NotImplementedException()
+};
+
+static NodeStatus ChangeStatus(NodeStatus status) => status switch
 {
     NodeStatus.Clean => NodeStatus.Weakened,
     NodeStatus.Weakened => NodeStatus.Infected,
