@@ -16,32 +16,10 @@ using (StreamReader reader = new(args[0]))
 
 (int, int)[] ports = [.. lines.Select(line => line.Split('/')).Select(parts => (int.Parse(parts[0]), int.Parse(parts[1])))];
 
-(int, int)[] startPorts = [..ports.Where(port => port.Item1 == 0 || port.Item1 == 0) ];
-
-int highestStrength = 0;
-foreach(var port in startPorts)
-{
-    int strength = strongestBridge([port],port.Item1 == 0 ? port.Item2 : port.Item1,ports);
-    highestStrength = Math.Max(highestStrength, strength);
-}
-
+int highestStrength = strongestBridge([], 0, ports);
 Console.WriteLine($"Part 1: {highestStrength}");
 
-int longest = 0;
-int strengthOfLongest = 0;
-foreach (var port in startPorts)
-{
-    var (length, strength) = strongestLongestBridge([port], port.Item1 == 0 ? port.Item2 : port.Item1, ports);
-    if (length > longest)
-    {
-        longest = length;
-        strengthOfLongest = strength;
-    } else if (length == longest)
-    {
-        strengthOfLongest = Math.Max(strengthOfLongest, strength);
-    }
-}
-
+var (longest,strengthOfLongest) = strongestLongestBridge([], 0, ports);
 Console.WriteLine($"Part 1: {strengthOfLongest}");
 
 return 0;
